@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Bubble Breaker</title>
+	<meta name="author" content="Dirk Ginader">
+	<style type="text/css" media="screen">
+		body{
+			font-family:verdana,arial,sans-serif;
+			font-size:.7em;
+		}
+		#bubble-breaker{
+			position:relative;
+			margin-top:30px;
+			margin-left:30px;
+		}
+		#bubble-breaker .board{
+			clear:both;
+		}
+		#bubble-breaker .col{
+			float:left;
+		}
+		#bubble-breaker .bubble{
+			border:1px solid transparent;
+			width:20px;
+			height:20px;
+			background-repeat:no-repeat;
+		}
+		#bubble-breaker .active{
+			border:1px solid black;
+		}
+		#bubble-breaker .hasActiveNeighbourTop{
+			border-top:1px solid transparent;
+		}
+		#bubble-breaker .hasActiveNeighbourRight{
+			border-right:1px solid transparent;
+		}
+		#bubble-breaker .hasActiveNeighbourBottom{
+			border-bottom:1px solid transparent;
+		}
+		#bubble-breaker .hasActiveNeighbourLeft{
+			border-left:1px solid transparent;
+		}
+		#bubble-breaker .green{
+			background-image:url('pics/green.gif');
+		}
+		#bubble-breaker .purple{
+			background-image:url('pics/purple.gif');
+		}
+		#bubble-breaker .yellow{
+			background-image:url('pics/yellow.gif');
+		}
+		#bubble-breaker .red{
+			background-image:url('pics/red.gif');
+		}
+		#bubble-breaker .blue{
+			background-image:url('pics/blue.gif');
+		}
+		#bubble-breaker .points{
+			display:none;
+			position:absolute;
+			background-color:black;
+			border:none;
+			color:white;
+			width:20px;
+			height:20px;
+			margin-top:-23px;
+			text-align:center;
+			padding:2px;
+		}
+		#bubble-breaker div.active{
+			display:block;
+		}
+		#bubble-breaker .score{
+			border:1px solid red;
+			clear:both;
+			display:inline;
+		}
+		#bubble-breaker .initiator a{
+			color:red;
+		}
+	</style>
+</head>
+<body>
+	<div id="bubble-breaker"></div>
+	<script src="soundmanager2.js" type="text/javascript"></script>
+	<script src="yahoo-dom-event.js" type="text/javascript"></script>
+	<!--<script type="text/javascript" src="http://yui.yahooapis.com/2.4.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>-->
+	<script src="bubble-breaker.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		bubbleBreaker = new YAHOO.GINADER.BubbleBreaker({
+			moduleId: "bubble-breaker",
+			size:{
+				x:12,
+				y:12
+			},
+			types:['green','purple','yellow','red','blue'],
+			initiateText:'new Game',
+			debug: true
+		});
+		//*
+		// Sound Integration
+		soundManager.debugMode = false;
+		soundManager.onload = function() {
+			soundManager.createSound({
+				id:'initSound',
+				url:'sounds/dloop.mp3'
+			});
+			soundManager.createSound({
+				id:'bubbleClickedSound',
+				url:'sounds/dull-clang.mp3'
+			});
+			soundManager.createSound({
+				id:'bubbleKilledSound',
+				url:'sounds/slam.mp3'
+			});
+			soundManager.createSound({
+				id:'finishSound',
+				url:'sounds/tap-on-monitor.mp3'
+			});
+			soundManager.createSound({
+				id:'epicWinSound',
+				url:'sounds/thunk.mp3'
+			});
+			playInitSound = function(){
+				console.log('playInitSound');
+				soundManager.play('initSound');
+			}
+			playBubbleClickedSound = function(){
+				console.log('playBubbleClickedSound');
+				soundManager.play('bubbleClickedSound');
+			}
+			playBubbleKilledSound = function(){
+				console.log('playBubbleKilledSound');
+				soundManager.play('bubbleKilledSound');
+			}
+			playFinishSound = function(){
+				console.log('playFinishSound');
+				soundManager.play('finishSound');
+			}
+			playEpicWinSound = function(){
+				console.log('playEpicWinSound');
+				soundManager.play('epicWinSound');
+			}
+			bubbleBreaker.onInit.subscribe(playInitSound,this,true);
+			bubbleBreaker.onBubbleclicked.subscribe(playBubbleClickedSound,this,true);
+			bubbleBreaker.onBubbleKilled.subscribe(playBubbleKilledSound,this,true);
+			bubbleBreaker.onFinish.subscribe(playFinishSound,this,true);
+			bubbleBreaker.onEpicWin.subscribe(playEpicWinSound,this,true);
+		}
+		// */
+		bubbleBreaker.init();
+	</script>
+</body>
+</html>
